@@ -16,7 +16,7 @@ def setKey():
         # no need to escape special characters as jinja does this in the template
         placesKey = request.form['places']
         # write to the file
-        with open("keys.txt", "w") as keyFile:
+        with open(current_app.config['API_KEYS_FILE'], "w+") as keyFile:
             keyFile.write("places:"+placesKey)
         #update the application config
         current_app.config.update(

@@ -1,11 +1,15 @@
-var form = $("#APIKeyForm");
-//bind submittion event to the API checks and save procedure
-form.submit(function(event){
-  $(".waiting").removeClass("d-none");
-  $("#error").addClass("d-none");
-  event.preventDefault();
-  getPlacesService();
-});
+var form=[];
+$(document).ready(function(){
+    form = $("#APIKeyForm");
+    //bind submittion event to the API checks and save procedure
+    form.one('submit', function(event){
+        $(".waiting").removeClass("d-none");
+        $("#error").addClass("d-none");
+        event.preventDefault();
+        getPlacesService();
+    });
+})
+
 
 function getPlacesService() {
    //load in the places library with the API key submitted, this won't error till we try to use it if the key is wrong
@@ -54,7 +58,7 @@ function processResult(result, serviceStatus){
         //add the verifyed config to the file and save for future use
         $(".waiting").addClass("d-none");
         $("#success").removeClass("d-none");
-        setTimeout(form.submit, 8000);
+        setTimeout(form.submit(), 8000);
     } else {
         //if this isn't a valid API key then log the results and display error messages
         console.log(result);
