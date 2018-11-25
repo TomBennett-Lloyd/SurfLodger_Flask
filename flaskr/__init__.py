@@ -5,9 +5,11 @@ from flask import Flask
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    #setup global config to hold paths to key files
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        API_KEYS_FILE = 'flaskr/keys.txt',
+        JSFILES=["external/JQuery/jquery-3.3.1.min.js", "external/Bootstrap/js/bootstrap.min.js"],
     )
 
     if test_config is None:
@@ -23,9 +25,22 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/home')
-    def home():
-        return 'Hello, World!'
+    #look for API Keys in API_KEYS_FILE
+    if os.path.isfile(app.config['API_KEYS_FILE']):
+        app = readKeys(app)
 
+    #import blueprints
+    from . import (setKey, home)
+    app.register_blueprint(setKey.bp)
+    app.register_blueprint(home.bp)
+
+    return app
+
+def readKeys(app):
+    with open(app.config['API_KEYS_FILE'], 'r') as keys:
+        for line in keys.readlines():
+            if line.split(':')[0] == "places":
+                app.config.update(
+                    PLACES_KEY=line.split(':')[1],
+                )
     return app

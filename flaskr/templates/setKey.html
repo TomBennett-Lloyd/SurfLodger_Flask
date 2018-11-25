@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block searchBar %}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Welcome to Surf Lodger!</h1>
+                <p>As this is your first time running the application we'll need your Google API key</p>
+                <p>We'll run some tests to make sure your key is configured correctly first. If these are successful
+                    you will be taken to the application, if not we'll let you know and the page will reload for you to
+                    try again.</p>
+            </div>
+            <div class="col-sm-6 pt-4">
+                <form id="APIKeyForm" method="POST">
+                    <div class="form-group">
+                        <label for="txtPlacesKey">Places API Key</label>
+                        <input type="text" class="form-control" id="txtPlacesKey" name="places" aria-describedby="placesKey"
+                            placeholder="Enter your key">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div id="attributions" class="alert alert-info d-none" role="alert">
+            Attributions Placeholder
+        </div>
+        <div id="error" class="alert alert-danger d-none" role="alert">
+            Invalid API Key: Please Try again once the page reloads
+        </div>
+        <div id="success" class="alert alert-success d-none" role="alert">
+            Valid API Key! You will now be taken to the site.
+        </div>
+    </div>
+</div>
+<ul class="waiting d-none mt-4">
+    <li class="list-group-item text-center">
+        <h1>Testing your key</h1><i class="fa fa-spinner fa-spin" style="font-size:50px"></i>
+    </li>
+</ul>
+{% endblock %}
