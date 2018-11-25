@@ -5,10 +5,17 @@ from flask import Flask
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    
+    # ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
     #setup global config to hold paths to key files
     app.config.from_mapping(
         SECRET_KEY='dev',
-        API_KEYS_FILE = 'flaskr/keys.txt',
+        API_KEYS_FILE = os.path.join(app.instance_path,'keys.txt'),
         JSFILES=["external/JQuery/jquery-3.3.1.min.js", "external/Bootstrap/js/bootstrap.min.js"],
     )
 
@@ -18,12 +25,6 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
-
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
 
     #look for API Keys in API_KEYS_FILE
     if os.path.isfile(app.config['API_KEYS_FILE']):

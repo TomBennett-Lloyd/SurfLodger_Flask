@@ -8,11 +8,11 @@ bp = Blueprint('setKey', __name__)
 @bp.route('/setKey', methods=['POST', 'GET'])
 def setKey():
     #check app doesn't already have a key
-    if hasattr(current_app.config, "PLACES_KEY"):
-        return redirect(url_for('home'))
+    if "PLACES_KEY" in current_app.config:
+        return redirect(url_for('home.home'))
 
-    #if this is a postback then update the key
-    if request.method == 'POST':
+    #if this is a postback containing the key then update the key
+    if request.method == 'POST' and 'places' in request.form:
         # no need to escape special characters as jinja does this in the template
         placesKey = request.form['places']
         # write to the file
