@@ -1,4 +1,7 @@
+from werkzeug.serving import make_server
 from flaskr import create_app
+from threading import Thread
+from flask import Flask
 import pytest
 import os
 
@@ -9,8 +12,6 @@ try:
 except:
     pass
 
-
-
 config = {
     'TESTING':True,
     'SECRET_KEY' : 'dev',
@@ -19,7 +20,6 @@ config = {
                "js/testingMethods.js"],
     'API_KEYS_FILE': keysFile
 }
-
 
 @pytest.fixture
 def app():
@@ -31,37 +31,43 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def runner(app):
-    return app.test_cli_runner()
-
-@pytest.fixture(scope="class")
-def driver_init(request):
+def setupDriver(request):
+    #start_server()
     from selenium import webdriver
-    web_driver = webdriver.Chrome('chromedriver/chromedriver.exe')
-    request.cls.driver = web_driver
+    driver = webdriver.Chrome(os.path.abspath('chromedriver/chromedriver.exe'))
+    request.instance.driver = driver
     yield
-    web_driver.close()
+    tearDown(driver)
 
 
-@pytest.mark.usefixtures("driver_init")
-class BaseTest:
-    pass
+class ServerThread(Thread):
 
-class Test_setKey_form (BaseTest):
-    def addKey(self, key):
-        wait = WebDriverWait(self.driver, 3)
-        self.driver.get("http://localhost/setKey")
-        wait.until(EC.visibility_of_element_located(
-            (By.CSS_SELECTOR, "input[name='places']"))).sendKeys(key[0])
-        self.driver.findElement(By.CSS_SELECTOR, "#APIKeyForm > button[type = 'submit']").click()
-        wait.until(EC.visibility_of_element_located(By.CSS_SELECTOR,"div.alert"))
-        assert self.driver.findElement(By.CSS_SELECTOR, "div.alert-"+key[1])
+    def __init__(self, app):
+        Thread.__init__(self)
+        self.srv = make_server('127.0.0.1', 5000, app)
+        self.ctx = app.app_context()
+        self.ctx.push()
 
-    def test_addKey(self):
-        testKeys = [
-            ["test","error"],
-            ["AIzaSyA1VBx0F3gr2YPK4KeS7ym6kMbNRUOZOB1", "error"],
-            ["AIzaSyA1VBx0F3gr2YPK4KeS7ym6kMbNRUOZOB8", "success"]
-        ]
-        for key in testKeys:
-            self.addKey(key)
+    def run(self):
+        self.srv.serve_forever()
+
+    def shutdown(self):
+        self.srv.shutdown()
+
+
+def start_server():
+    global server
+    app = create_app()
+    ...
+    server = ServerThread(app)
+    server.start()
+
+
+def stop_server():
+    global server
+    server.shutdown()
+
+def tearDown (driver):
+    driver.close()
+    stop_server()
+    

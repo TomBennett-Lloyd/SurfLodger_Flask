@@ -86,19 +86,19 @@ function setMarker(address,place) {
 //Build the infowindow content
 function setInfoWindow(place,address){
     //get the template for the marker content
-    var infowindowContent = document.getElementById('infowindow-content');
-    var hiddenForm = $(infowindowContent).children('#GMapVals');
+    var infowindowContent = $('#infowindow-content');
+    var hiddenForm = $(infowindowContent).children('.GMapVals');
     //assign the values to the hidden form in the marker so that they can be used for searching
-    hiddenForm.children('#lat').val(place.geometry.location.lat());
-    hiddenForm.children('#lng').val(place.geometry.location.lng());
-    hiddenForm.children('#name').val(place.name);
+    hiddenForm.children('.lat').val(place.geometry.location.lat());
+    hiddenForm.children('.lng').val(place.geometry.location.lng());
+    hiddenForm.children('.name').val(place.name);
     // put together the content of the marker
-    infowindowContent.children['place-icon'].src = place.icon;
-    infowindowContent.children['place-name'].textContent = place.name;
-    infowindowContent.children['place-address'].textContent = address;
+    infowindowContent.children('.place-icon').attr("src",place.icon);
+    infowindowContent.children('.place-name').text(place.name);
+    infowindowContent.children('.place-address').text(address);
     //init the infowindow
     var infowindow = new google.maps.InfoWindow(); 
-    infowindow.setContent(infowindowContent.innerHTML);
+    infowindow.setContent(infowindowContent.html());
     return infowindow;
 }
 //this is the function attached to the 'use my location' button

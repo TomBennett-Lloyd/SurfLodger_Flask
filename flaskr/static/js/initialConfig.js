@@ -41,7 +41,7 @@ function testService() {
     //reasonable time to complete the task and if that elapses without success conclude that it has failed. There 
     //will be a log in the console however this is handled within the service and as far as i'm aware we dont have
     //access.
-    setTimeout(timoutHandler,20000);
+    setTimeout(timoutHandler,10000);
     //try the request
     service.findPlaceFromQuery({
         query:"bantham",

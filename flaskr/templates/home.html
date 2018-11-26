@@ -120,16 +120,16 @@
 
 <!-- Template info window -->
 <div id="infowindow-content" class="container d-none">
-    <img src="" width="16" height="16" id="place-icon">
-    <span id="place-name" class="title"></span>
+    <img src="" width="16" height="16" class="place-icon">
+    <span class="title place-name"></span>
     </br>
-    <span id="place-address"></span>
+    <span class="place-address"></span>
     </br>
-    <button class="btn btn-info m-2 getForecast" onclick="getPlaces(this)">Find your Accommodation</button>
-    <form id="GMapVals" class="GMapVals" method="post">
-        <input type="hidden" id="lat" name="lat" />
-        <input type="hidden" id="lng" name="lng" />
-        <input type="hidden" id="name" name="name" />
+    <button class="btn btn-info m-2" onclick="getPlaces(this)">Find your Accommodation</button>
+    <form class="GMapVals" method="post">
+        <input type="hidden" class="lat" name="lat" />
+        <input type="hidden" class="lng" name="lng" />
+        <input type="hidden" class="name" name="name" />
     </form>
 </div>
 
