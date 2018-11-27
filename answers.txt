@@ -50,6 +50,9 @@ public/js/places.js [line:29-41]
     settings[$(this).attr("name")] = val;
 });
 
+I also really liked using jQuery for the AJAX request handling with the Google places API and liked how quickly i
+was able to get a html template together with bootstrap.
+
 Another great feature was in flask where routing is just built in out of the box. This was great as it allowed me
 to structure the application as an application without needing the files in the correct folders or having to 
 write a routing module. I also really liked the templates functionality, it was a really efficient way to write
