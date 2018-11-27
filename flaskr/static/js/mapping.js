@@ -1,7 +1,7 @@
 /* global google, settings */
 //set Global variables
 var map;
-var markers;
+var markers =[];
 var bounds;
 var latRegex = new RegExp("^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$" , "gi");
 var lonRegex = new RegExp("^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$" , "gi");
@@ -34,14 +34,16 @@ function place_changer(form, autocomplete) {
     //bind the marker creation to the search bar
     form.submit(function (event) {
     event.preventDefault();
-    //get the place from the autocomplete input or
+    //it might be a lat lng so we'll test for that before getting the place 
+    //from the autocomplete input as that could still be there if there was a previous search
+    var place = checkLatLon({name : $("#txtLocation").val()}) || autocomplete.getPlace() || "";
     //if theres no place then the user hasn't selected an option from the dropdown
-    //it might be a lat lng so we'll test for that before raising the error alert
-    var place = autocomplete.getPlace() || {name : $("#txtLocation").val()};
-    //if there's no geometry see whether it's a lat long or whether the place just dosen't have geometry
-    place.geometry ? place : place = checkLatLon(place);
-    //if there's still not geometry the extraction of lat long failed
-    if (!place) {return;}
+    //if there's no geometry the extraction of lat long failed or a place wasn't selected
+    if (!place.geometry) {
+        // User entered the name of a Place that was not suggested and
+        // pressed the Enter key, or the Place Details request failed.
+        window.alert("Please make sure you either enter a valid lat lng or select an option from the list.");
+        return;}
     //build the address string if there is one
     var address = buildAddress(place.address_components);
     //put the marker on the map
@@ -78,7 +80,8 @@ function setMarker(address,place) {
             //and the map is not being used for searching
             radius: settings.radius || 0 
           });
-     circle.setOptions({zIndex:0});
+    circle.setOptions({zIndex:0});
+    markers.push(circle);
     //set the map view to center on the new point
     map.setCenter(place.geometry.location);
     map.setZoom(15);
@@ -140,9 +143,7 @@ function checkLatLon (place){
             return place;
         }
     }
-    // User entered the name of a Place that was not suggested and
-    // pressed the Enter key, or the Place Details request failed.
-    window.alert("Please make sure you either enter a valid lat lng or select an option from the list.");
+    
     return false;
 }
 //build the address string

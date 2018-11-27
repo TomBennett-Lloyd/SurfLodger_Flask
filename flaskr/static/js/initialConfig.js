@@ -41,7 +41,7 @@ function testService() {
     //reasonable time to complete the task and if that elapses without success conclude that it has failed. There 
     //will be a log in the console however this is handled within the service and as far as i'm aware we dont have
     //access.
-    setTimeout(timoutHandler,10000);
+    setTimeout(timoutHandler,5000);
     //try the request
     service.findPlaceFromQuery({
         query:"bantham",
@@ -58,14 +58,14 @@ function processResult(result, serviceStatus){
         //add the verifyed config to the file and save for future use
         $(".waiting").addClass("d-none");
         $("#success").removeClass("d-none");
-        setTimeout(form.submit(), 8000);
+        setTimeout(function(){form.submit()}, 5000);
     } else {
         //if this isn't a valid API key then log the results and display error messages
         console.log(result);
         console.log(serviceStatus);
         $(".waiting").addClass("d-none");
         $("#error").removeClass("d-none");
-        setTimeout(reloader,8000);
+        setTimeout(reloader,5000);
     }
 }
 

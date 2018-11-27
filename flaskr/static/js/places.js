@@ -31,6 +31,11 @@ $(document).ready(function(){
         //the keyword is a free text option however there can be mutiple words so we need to split into array
         if ($(this).attr("name") === "keyword"){
             val= val.split(/[\s,]+/);
+        } else if ($(this).attr("name") === "radius"){
+            //resize the search radius circles
+            $.each(markers,function(key,value){
+                value.setOptions({ radius: parseInt(val) });
+            });
         }
         settings[$(this).attr("name")] = val;
     });
@@ -160,7 +165,7 @@ function getDetails (placeId) {
     //build request from place id and fields from the global settings
     var request = {
         placeId: placeId,
-        fields: settings. fields
+        fields: settings.fields
     };
     //process request
     service = new google.maps.places.PlacesService(map);

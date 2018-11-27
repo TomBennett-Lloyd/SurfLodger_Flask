@@ -1,4 +1,5 @@
 from werkzeug.serving import make_server
+from selenium.webdriver.support.ui import WebDriverWait
 from flaskr import create_app
 from threading import Thread
 from flask import Flask
@@ -6,6 +7,7 @@ import pytest
 import os
 
 dir_path = os.path.abspath('./')
+#set keysFile for testing and ensure it doesn't already exist
 keysFile = os.path.join(dir_path, 'instance\\testKeys.txt')
 try:
     os.remove(keysFile)
@@ -22,6 +24,21 @@ config = {
 }
 
 @pytest.fixture
+def realKey():
+    #path to live keys file to get the valid key
+    keysFile = os.path.join(dir_path, 'instance\\keys.txt')
+    realKey = ""
+    if os.path.isfile(keysFile):
+        with open(keysFile, 'r') as keys:
+            line = keys.readline().split(":")
+            if line[0] == "places":
+                realKey = line[1]
+
+    if realKey == "":
+        realKey = "Please use the App to set up your key"
+    yield realKey
+
+@pytest.fixture
 def app():
     app = create_app(config)
     yield app
@@ -32,12 +49,14 @@ def client(app):
 
 @pytest.fixture
 def setupDriver(request):
-    #start_server()
+    start_server()#start the built in web server in separate thread
     from selenium import webdriver
     driver = webdriver.Chrome(os.path.abspath('chromedriver/chromedriver.exe'))
     request.instance.driver = driver
-    yield
-    tearDown(driver)
+    driver.get('http://localhost:5000/home') #navigate to the homepage
+    driver.wait = WebDriverWait(driver, 10, poll_frequency=1) #init the waiter
+    yield driver
+    tearDown(driver)#stop the threads after test
 
 
 class ServerThread(Thread):
@@ -57,7 +76,7 @@ class ServerThread(Thread):
 
 def start_server():
     global server
-    app = create_app()
+    app = create_app(config)
     ...
     server = ServerThread(app)
     server.start()
