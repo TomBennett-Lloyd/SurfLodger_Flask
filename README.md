@@ -3,7 +3,8 @@
 <h3>Running Instructions</h3>
 
 <p>This Project can be run using install.bat for the first time and surfLodger.bat thereafter. Some of the tests 
-are dependent on installation of the project and input of the API key</p>
+are dependent on installation of the project and input of the API key so make sure you've done this before running
+test.bat</p>
 
 <p>It was run locally on a Windows machine using python 3 and flask.py's built in server. This project does not make use
 of any databases. It makes use of a text file that will contain your API key however the web application will ask you
