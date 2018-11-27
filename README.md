@@ -14,9 +14,9 @@ test.bat</p>
 of any databases. It makes use of a text file that will contain your API key however the web application will ask you
 for this information, test it's functionality and generate the file for you when you first run the application.</p>
 
-<p>If you make a mistake when entering the key, it will let you re-try if the key doesn't work and wont save it 
-until it does. If you want to add a different key you can just delete the config file here:
- "instance/keys.txt"</p>
+<p>If you make a mistake when entering the key and the key doesn't work, it will let you re-try and wont save it 
+until it does the test comes through. If you are having difficulties, check the browser console for detailed information.
+If you want to add a different key you can just delete the config file here: "instance/keys.txt"</p>
 
 <p>If you want to change the search parameters, there is a settings menu at the top of the results list</p>
 
