@@ -6,6 +6,10 @@
 are dependent on installation of the project and input of the API key so make sure you've done this before running
 test.bat</p>
 
+<p>The installer creates a new virtual python environment in the repository, installs the package and it's dependencies
+ including those required for testing, starts a web page and starts the application on localhost:5000. I've found that
+ the web page has refreshed when the application becomes available but you may need to refresh the page if not.</p>
+
 <p>It was run locally on a Windows machine using python 3 and flask.py's built in server. This project does not make use
 of any databases. It makes use of a text file that will contain your API key however the web application will ask you
 for this information, test it's functionality and generate the file for you when you first run the application.</p>
