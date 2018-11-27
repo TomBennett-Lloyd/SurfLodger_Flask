@@ -6,7 +6,7 @@
 are dependent on installation of the project and input of the API key</p>
 
 <p>It was run locally on a Windows machine using python 3 and flasks built in server. This project does not make use
-of any databases. It makes use of a text that will contain your API key however the web application will ask you
+of any databases. It makes use of a text file that will contain your API key however the web application will ask you
 for this information, test it's functionality and generate the file for you when you first run the application.</p>
 
 <p>If you make a mistake when entering the key, it will let you re-try. if the key doesn't work and wont save it 
