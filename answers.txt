@@ -14,6 +14,13 @@ application runs smoothly. Next i would like to make use of sass for the css so 
 bootstrap classes and customise the colour scheme. I would like to make use of some front end build tools to
 compile and minify the javaScript and css to speed up load times and manage packages and dependencies.
 
+I would also like to improve the test coverage of the front end application, i've not yet built in tests
+for the geolocation, double click place identification, contents of links in the list, testing for
+the presence of opening hours for places that i know will have them and varying the settings.
+I would also like to try to test the output of the circle markers with selenium. I have made a javaScript test
+that can do this (i actually used it for the legend) so i might execute this from selenium.
+
+
 A bit further down the line i want to add a Slider to control the time so that the circles change opacity
 depending on whether they're open at the time denoted by the slider. This could move along the x axis of a
 graph showing number of open lodges and average star rating of open lodges against time with a drop down
