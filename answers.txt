@@ -1,0 +1,86 @@
+Plans for the future
+
+I have spent about 40 hours on this project so far. This includes setting up a php development environment
+for the first time, writing the backend of the app in php, setting up a python web development environment
+for the first time, learning how to use the flask framework and re-writing the app using this.
+
+I opted for re-writing the app as i was more familiar with package dependency management in python and 
+wanted to use the pytest framework and the python selenium webdriver for testing. I am glad i did this as
+i really enjoyed learning how to use python for web apps and will definatley look to move to a hosting
+provider that will allow me to do this in the future.
+
+Firstly I want to build in more error handling and logging to enable easier debugging and ensure the
+application runs smoothly. Next i would like to make use of sass for the css so that i can easily extend the 
+bootstrap classes and customise the colour scheme. I would like to make use of some front end build tools to
+compile and minify the javaScript and css to speed up load times and manage packages and dependencies.
+
+A bit further down the line i want to add a Slider to control the time so that the circles change opacity
+depending on whether they're open at the time denoted by the slider. This could move along the x axis of a
+graph showing number of open lodges and average star rating of open lodges against time with a drop down
+list to change day.
+
+
+Useful Feature
+
+The ability to bind various elements of the page to one another in javaScript. I used this in the Settings menu
+and in making the circles click-able to highlight their corresponding details in the list. I also made the radius
+of the circle denoting the search are change size when the radius changed in the menu. Here's the code i used to
+do this:
+
+public/js/places.js [line:29-41]
+
+ $(".setting").change(function (){
+    var val = $(this).val();
+    //the keyword is a free text option however there can be mutiple words so we need to split into array
+    if ($(this).attr("name") === "keyword"){
+        val= val.split(/[\s,]+/);
+    } else if ($(this).attr("name") === "radius"){
+        //resize the search radius circles
+        $.each(markers,function(key,value){
+            value.setOptions({ radius: parseInt(val) });
+        });
+    }
+    settings[$(this).attr("name")] = val;
+});
+
+Another great feature was in flask where routing is just built in out of the box. This was great as it allowed me
+to structure the application as an application without needing the files in the correct folders or having to 
+write a routing module. I also really liked the templates functionality, it was a really efficient way to write
+HTML whilst keeping it separate from the python code.
+
+The pytest module was very useful as well, i found quite a few bugs just through writing the tests for code that 
+i thought already worked, the coverage tool highlighted parts of the code my tests hadn't hit and in mofifying the
+tests to hit 100% of the backend code, i found areas that i hadn't thought about testing manually. it produces a nice
+little html report that you can find in the htmlcov folder after running test.bat .
+
+Tracking Down Performance Issues
+
+The first step i take is to make sure i can replicate the issue at hand on the system that has experienced
+the issue and then again but debugging through the software locally. This could either be done via writing a 
+test to automate the simulation of multiple scenarios, to get a good impression of how the issue presents it's
+self and for ease of re-testing, or, if that is likely to be un-necessarily time consuming, then i would do it 
+manually instead. At this point i will have a good idea of what the application should be doing in this scenario,
+so that i can be sure my changes won't stop anything else from working as well as before
+
+Once the rough part of the application that might be causing the problem has been identified, i would
+then step through that part of the code in more detail, profiling the various processes, to hone in on the
+culprit method. Once the method that is most likely to be causing the performance issue has 
+been identified i first try to make sure i fully understand it's role in the application and exactly what 
+it's trying to achieve. With this in mind I then go through it to understand whether there are any operations 
+that can be stripped out or are being un-necessarily repeated. Once i'm sure the current way the method goes 
+about achieving it's goals is as lean as possible, if I've made changes, I'll re-test to see whether this has 
+helped.
+
+If there are still performance issues then i start to look into alternative ways to approach the problem
+such as seeing whether the functionality can be incorporated into other methods within the application
+"whilst they're at it or already there". For example if the same object is being iterated over in multiple places
+during the same overarching process, perhaps the iterators could be combined or relevant data extracted so
+there is less to go through next time. Another example is querying a database, limiting the number of times 
+the application has to connect to the database can be just as important as reducing the amount it has to do
+whilst over there. With web applications, it might be more efficient  overall to process things like graphics once 
+on the server side and send to the client as images however if there is a poor connection it might be faster for 
+the end user to process the imagery client side, especially if it's based on relatively simple data
+
+
+Once I have found a solution i'm happy with I would retest the original problem as well as testing for 
+other things that could be affected by the fix, then if successful, deploy the solution.
